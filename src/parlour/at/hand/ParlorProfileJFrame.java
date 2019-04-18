@@ -14,9 +14,7 @@ import parlour.at.hand.model.parlor;
  */
 public class ParlorProfileJFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ParlorProfileJFrame
-     */
+  
     public ParlorProfileJFrame() {
         initComponents();
     }
