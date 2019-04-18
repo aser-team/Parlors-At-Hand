@@ -25,7 +25,7 @@ public class SearchParlorListJFrame extends javax.swing.JFrame {
     Object plist;
     int id;
     private List list;
-    /** Creates new form SearchParlorListJFrame */
+   
     public SearchParlorListJFrame() {
         initComponents();
     }
