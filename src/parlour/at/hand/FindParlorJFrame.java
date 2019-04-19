@@ -21,9 +21,6 @@ import parlour.at.hand.util.StaticVariables;
 public class FindParlorJFrame extends javax.swing.JFrame {
       String location,gender,parlor_name,service_at;
 
-    /**
-     * Creates new form FindParlorJFrame
-     */
   FactoryDao fdao;
     public FindParlorJFrame() {
         initComponents();
