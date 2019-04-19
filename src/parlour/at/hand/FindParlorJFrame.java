@@ -154,13 +154,35 @@ public class FindParlorJFrame extends javax.swing.JFrame {
        List bynamepfor= fdao.getParlorData(StaticVariables.BY_GENDER_COLUMN,gender);
        List byservice= fdao.getParlorData(StaticVariables.BY_SERVICE_COLUMN,service_at);
        
+       for(Object object:bylocationlist)
+       {
+           parlor p=(parlor) object;
+           System.out.println("Owner:"+p.getPowner());
+           System.out.println("Location:"+p.getPservicel()); 
+            new SearchParlorListJFrame(p.getPname(),p.getPowner(),p.getRating(),p.getPfor(),p.getPservicet()).setVisible(true);
+       }
        for(Object object:bynamepfor)
        {
            parlor p=(parlor) object;
            System.out.println("Location:"+p.getPowner());
            System.out.println("Location:"+p.getPservicel()); 
-           SearchParlorListJFrame page=new SearchParlorListJFrame(p);
-            page.setVisible(true);
+            new SearchParlorListJFrame(p.getPname(),p.getPowner(),p.getRating(),p.getPfor(),p.getPservicet()).setVisible(true);
+             //new SearchParlorListJFrame(p).setVisible(true);
+       }
+       for(Object object:bynamelist)
+       {
+           parlor p=(parlor) object;
+           System.out.println("Location:"+p.getPowner());
+           System.out.println("Location:"+p.getPservicel()); 
+            new SearchParlorListJFrame(p.getPname(),p.getPowner(),p.getRating(),p.getPfor(),p.getPservicet()).setVisible(true);
+         
+       }
+       for(Object object:byservice)
+       {
+           parlor p=(parlor) object;
+           System.out.println("Location:"+p.getPowner());
+           System.out.println("Location:"+p.getPservicel()); 
+           new SearchParlorListJFrame(p.getPname(),p.getPowner(),p.getRating(),p.getPfor(),p.getPservicet()).setVisible(true);        
        }
          
     }//GEN-LAST:event_jButton1ActionPerformed
