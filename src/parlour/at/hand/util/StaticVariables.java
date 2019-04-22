@@ -15,4 +15,5 @@ public class StaticVariables {
      public static String BY_GENDER_COLUMN="pfor";
      public static String BY_SERVICE_COLUMN="pservicet";
     
+     
 }

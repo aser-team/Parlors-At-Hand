@@ -6,7 +6,15 @@
 
 package parlour.at.hand;
 
+import java.awt.Component;
+import java.util.List;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import parlour.at.hand.model.parlor;
 
 /**
  *
@@ -14,22 +22,32 @@ import javax.swing.DefaultListModel;
  */
 public class SearchParlorListJFrame extends javax.swing.JFrame {
     DefaultListModel model=new DefaultListModel();
-
+    Object plist;
+    int id;
+    private List list;
     /** Creates new form SearchParlorListJFrame */
     public SearchParlorListJFrame() {
         initComponents();
     }
-    public SearchParlorListJFrame(String pname,String powner,int prating,String pfor,String pserviceat)
+    public SearchParlorListJFrame(List list)
   {
+      this.list=list;
       initComponents();
-      String[] result = {"<html>"+pname+"<br/>"+powner+"<br/>"+prating+"<br/>"+ pfor+"<br/>"+pserviceat};
+      new FindParlorJFrame().setVisible(false);
       jList1.setModel(model);
-      for (int i=0; i < result.length; i++) {
+      for(Object object:list)
+      {
+        parlor p=(parlor)object; 
+        id=p.getPid();
+        String[] result={"<html>"+"Parlor Name: "+p.getPname()+"<br/>"+"Parlor Owner:"+p.getPowner()+"<br/>"+"Rating: "+p.getRating()+"<br/>"+"Service At: "+p.getPservicet()};
+       for (int i=0; i < result.length; i++) {
           model.addElement(result[i].trim());
+      }  
+       plist=object;   
       }
-      
-      //jLabel1.setText(pname);
+        
   }
+   
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -46,10 +64,34 @@ public class SearchParlorListJFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jList1.setBackground(new java.awt.Color(255, 255, 153));
+        jList1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 0, 0)));
+        jList1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
+        });
+        jList1.setSelectionBackground(new java.awt.Color(0, 204, 102));
+        jList1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jList1FocusGained(evt);
+            }
+        });
+        jList1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jList1MouseClicked(evt);
+            }
+        });
+        jList1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jList1KeyPressed(evt);
+            }
+        });
+        jList1.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jList1ValueChanged(evt);
+            }
         });
         jScrollPane1.setViewportView(jList1);
 
@@ -59,25 +101,48 @@ public class SearchParlorListJFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_jList1ValueChanged
+
+    private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
+        // TODO add your handling code here:
+         
+         System.out.println("item:"+jList1.getSelectedIndex());
+    new ParlorProfileJFrame(list.get(jList1.getSelectedIndex())).setVisible(true);
+        
+    }//GEN-LAST:event_jList1MouseClicked
+
+    private void jList1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jList1FocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jList1FocusGained
+
+    private void jList1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jList1KeyPressed
+        // TODO add your handling code here:
+     //   new ParlorProfileJFrame(plist,id).setVisible(true);
+    }//GEN-LAST:event_jList1KeyPressed
 
     /**
      * @param args the command line arguments

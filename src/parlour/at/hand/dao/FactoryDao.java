@@ -17,15 +17,23 @@ import parlour.at.hand.model.parlor;
  */
 public class FactoryDao {
 
-    public List getParlorData(String columnName, String columnValue) {
+    public List getParlorData(String sql) {
         Session session = new HibernetSession().getSession();
-        String hql = "FROM parlor WHERE " + columnName + " = '" + columnValue + "'";
+        //String hql = "FROM parlor WHERE " + columnName + " = '" + columnValue + "'";
         session.getTransaction().begin();
-        Query query = session.createQuery(hql);
+        Query query = session.createQuery(sql);
         List results = query.list();
        
         return results;
-
+    }
+     public void insertValue(parlor p)
+    {
+        Session session = new HibernetSession().getSession();
+        //String hql = "FROM parlor WHERE " + columnName + " = '" + columnValue + "'";
+        session.getTransaction().begin();
+        session.save(p);
+        session.getTransaction().commit();
+        session.close();
     }
 
 }

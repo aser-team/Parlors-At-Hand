@@ -8,9 +8,11 @@ package parlour.at.hand;
 import com.mysql.jdbc.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import parlour.at.hand.dao.FactoryDao;
-import parlour.at.hand.database_Connection.MyConnection;
+import parlour.at.hand.model.QueryModel;
+
 import parlour.at.hand.model.parlor;
 import parlour.at.hand.util.StaticVariables;
 
@@ -144,46 +146,44 @@ public class FindParlorJFrame extends javax.swing.JFrame {
          gender= genderComboBox.getItemAt(genderComboBox.getSelectedIndex());
          parlor_name=parlorNameTextField1.getText();
          service_at=serviceAtTextField.getText();
-         
-        fdao=new FactoryDao();        
-       List bylocationlist= fdao.getParlorData(StaticVariables.BY_LOCATION_COLUMN,location);
-       List bynamelist= fdao.getParlorData(StaticVariables.BY_NAME_COLUMN,parlor_name);
-       List bynamepfor= fdao.getParlorData(StaticVariables.BY_GENDER_COLUMN,gender);
-       List byservice= fdao.getParlorData(StaticVariables.BY_SERVICE_COLUMN,service_at);
+         QueryModel qModel=new QueryModel(parlor_name,location,service_at,gender);
+         fdao=new FactoryDao();        
+       List resultlist= fdao.getParlorData(prePareQueryStatement(qModel)); 
        
-       for(Object object:bylocationlist)
-       {
-           parlor p=(parlor) object;
-           System.out.println("Owner:"+p.getPowner());
-           System.out.println("Location:"+p.getPservicel()); 
-            new SearchParlorListJFrame(p.getPname(),p.getPowner(),p.getRating(),p.getPfor(),p.getPservicet()).setVisible(true);
-       }
-       for(Object object:bynamepfor)
-       {
-           parlor p=(parlor) object;
-           System.out.println("Location:"+p.getPowner());
-           System.out.println("Location:"+p.getPservicel()); 
-            new SearchParlorListJFrame(p.getPname(),p.getPowner(),p.getRating(),p.getPfor(),p.getPservicet()).setVisible(true);
-             //new SearchParlorListJFrame(p).setVisible(true);
-       }
-       for(Object object:bynamelist)
-       {
-           parlor p=(parlor) object;
-           System.out.println("Location:"+p.getPowner());
-           System.out.println("Location:"+p.getPservicel()); 
-            new SearchParlorListJFrame(p.getPname(),p.getPowner(),p.getRating(),p.getPfor(),p.getPservicet()).setVisible(true);
-         
-       }
-       for(Object object:byservice)
-       {
-           parlor p=(parlor) object;
-           System.out.println("Location:"+p.getPowner());
-           System.out.println("Location:"+p.getPservicel()); 
-           new SearchParlorListJFrame(p.getPname(),p.getPowner(),p.getRating(),p.getPfor(),p.getPservicet()).setVisible(true);        
-       }
-         
+      new SearchParlorListJFrame(resultlist).setVisible(true);
+      
+      System.out.println( prePareQueryStatement(qModel) );
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    public String prePareQueryStatement(QueryModel model)
+    {
+        List<String> list=new ArrayList<>();
+        if(!model.getName().isEmpty())
+        {
+            list.add(" pname = '"+model.getName()+"'");
+        }
+        if(!model.getLocation().isEmpty())
+        {
+            list.add(" pservicel = '"+model.getLocation()+"'");
+        }
+          if(!model.getService().isEmpty())
+        {
+            list.add(" pservicet = '"+model.getService()+"'");
+        }
+          if(!model.getGender().isEmpty())
+        {
+            list.add(" pfor = '"+model.getGender()+"'");
+        }
+         String preparedSubQuery="FROM parlor WHERE (";
+          for(int i=0;i<list.size();i++)
+          {
+              preparedSubQuery=preparedSubQuery+list.get(i);
+              if(i==list.size()-1)
+                  continue;
+              preparedSubQuery=preparedSubQuery+" AND ";
+          }
+          return preparedSubQuery+")";
+    }
     /**
      * @param args the command line arguments
      */
